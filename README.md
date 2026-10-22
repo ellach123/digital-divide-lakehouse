@@ -183,6 +183,26 @@ airflow dags pause ddlake_refresh                  # the DAG stays paused betwee
 
 A run takes about 10 minutes: extract (seconds when there is no new WDI release), SAS rotation, the Databricks job (about 9 minutes) and `dbt build`. A week without new data writes nothing. `airflow dags pause` / `unpause` print the state *before* the change.
 
+![Airflow graph of ddlake_refresh](docs/images/week6-airflow-graph.png)
+
+A successful end-to-end run (2026-10-16, 10 min 54 s): extract, SAS rotation, the Databricks job, `dbt build`.
+
+![Airflow grid of four ddlake_refresh runs](docs/images/week6-airflow-grid.png)
+
+Four runs of the DAG. The red one is the fault-injection test (an unknown storage account): extraction failed after its retries, and the three downstream tasks were marked `upstream_failed`, so neither the Databricks job nor dbt ran.
+
+![Airflow run and queue durations of the same four runs](docs/images/week6-airflow-run-durations.png)
+
+The same four runs, split into queued time (grey) and run time. A successful run takes 9 to 11 minutes; the failed run took about 15, most of it the two 5-minute retry delays. The grey parts are waiting, not work: the second run was triggered while the first was still running and waited for it (`max_active_runs=1`), and the fault-injection run was triggered while the DAG was paused and only started once it was unpaused.
+
+![Databricks job ddlake_refresh: tasks](docs/images/week6-databricks-job-graph.png)
+
+The Databricks job defined in `databricks.yml`: the World Bank and Ookla chains run in parallel on serverless compute.
+
+![Databricks job ddlake_refresh: run history](docs/images/week6-databricks-job-runs.png)
+
+Run history of the job (empty part of the timeline cut out): every task succeeded in all four runs, each taking 7 to 9 minutes.
+
 Keep in mind:
 - Rebuild the image (step 3) after changing `ingestion/` or `transform/dbt/`: the DAG runs `ddlake-tasks:latest`.
 - The landing SAS is valid for 6 days after the last Airflow run. To run the Databricks job without Airflow after that, rotate it first (`python -m ingestion.landing_sas`, in the image or the local environment).

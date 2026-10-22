@@ -37,7 +37,7 @@
 - [x] ruff configured for notebooks (`notebooks/ruff.toml`), snapshots excluded: 437 → 0 findings
 - [x] `tests/orchestration/test_dag_integrity.py`: 7 tests (skipped where Airflow is not installed)
 - [x] Local gitleaks scan: no leaks (14 commits, 107 files)
-- [ ] First CI run on GitHub is green
+- [x] First CI run on GitHub is green (all five jobs and the image build)
 
 ## G. Remote state and budget
 - [x] `infra/bootstrap/create_tfstate.ps1`: state account in its own resource group
@@ -52,10 +52,11 @@
 - [ ] Local Python environment on 3.12
 
 ## H. Repo
-- [ ] Commit: Databricks jobs, Notebook 35 tolerance
-- [ ] Commit: task image, SAS rotation, Airflow DAG
-- [ ] Commit: Terraform pipeline identity, remote state, subscription budget
-- [ ] Commit: CI, lint configuration, DAG test
-- [ ] Commit: ADR 0006, checklists, README
-- [ ] Local gitleaks scan of the new history before pushing
-- [ ] Push
+- [x] Commit: Databricks jobs, Notebook 35 tolerance
+- [x] Commit: task image, SAS rotation, Airflow DAG
+- [x] Commit: Terraform pipeline identity, remote state, subscription budget
+- [x] Commit: CI, lint configuration, DAG test
+- [x] Commit: ADR 0006, checklists, README
+- [x] Local gitleaks scan of the new history before pushing
+- [x] Push
+- [x] Screenshots of the DAG and the Databricks job in the README (added in week 7)

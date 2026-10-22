@@ -1,6 +1,6 @@
 # Global & Dutch Digital Divide Lakehouse
 
-[![CI](https://github.com/FreeyaFly/digital-divide-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/FreeyaFly/digital-divide-lakehouse/actions/workflows/ci.yml)
+[![CI](https://github.com/ellach123/digital-divide-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/ellach123/digital-divide-lakehouse/actions/workflows/ci.yml)
 
 An end-to-end data platform that measures the digital divide, from global country-level ICT indicators down to broadband quality in Dutch municipalities.
 

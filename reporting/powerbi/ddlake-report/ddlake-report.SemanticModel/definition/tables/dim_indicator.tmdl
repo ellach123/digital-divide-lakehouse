@@ -1,0 +1,67 @@
+/// World Bank WDI indicators loaded.
+table dim_indicator
+	lineageTag: 21141c99-bf35-4402-b21e-d07df0a425ca
+
+	column indicator_code
+		dataType: string
+		isHidden
+		lineageTag: 771d2be6-ca58-4945-b6ff-19d41ae58aef
+		summarizeBy: none
+		sourceColumn: indicator_code
+
+		annotation SummarizationSetBy = User
+
+	column Indicator
+		dataType: string
+		lineageTag: 3bb5ceb2-d7bd-47f7-93f0-5508f6f68f35
+		summarizeBy: none
+		sourceColumn: indicator_name
+
+		annotation SummarizationSetBy = User
+
+	column Unit
+		dataType: string
+		lineageTag: 8ec91e23-4e46-42c4-94d6-378f3cf59482
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = User
+
+	column 'Indicator (short)'
+		dataType: string
+		lineageTag: 66de4bf9-08f1-4836-8e3c-d353dd86af37
+		summarizeBy: none
+		sourceColumn: short_name
+
+		annotation SummarizationSetBy = User
+
+	column Topic
+		dataType: string
+		lineageTag: 900d2756-1a75-454b-9555-2301da127d94
+		summarizeBy: none
+		sourceColumn: topic
+
+		annotation SummarizationSetBy = User
+
+	column group_aggregation
+		dataType: string
+		isHidden
+		lineageTag: aeaeb732-e9e2-48b1-a2c4-6604fa7c0da6
+		summarizeBy: none
+		sourceColumn: group_aggregation
+
+		annotation SummarizationSetBy = User
+
+	partition dim_indicator = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "dim_indicator", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

@@ -5,3 +5,17 @@ title = "ddlake gitleaks config"
 
 [extend]
 useDefault = true
+
+# The default rules do not cover workspace host names; a real host would identify the
+# workspace. Power BI exports replace it with a placeholder (tools/export_pbip.py).
+[[rules]]
+id = "databricks-workspace-host"
+description = "Databricks workspace host name"
+regex = '''\b[a-z0-9-]+\.(?:cloud\.databricks\.com|azuredatabricks\.net)\b'''
+keywords = ["databricks"]
+
+# Fake host in an older test, already in history.
+[[rules.allowlists]]
+condition = "AND"
+paths = ['''^tests/tools/test_export_notebook_snapshot\.py$''']
+regexes = ['''^dbc-0000aaaa-1111\.cloud\.databricks\.com$''']

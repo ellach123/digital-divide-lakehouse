@@ -1,0 +1,85 @@
+/// World, regions and income groups (two classifications) used by the group aggregates.
+table dim_group
+	lineageTag: 63cf1c4d-bc5b-4ba2-8bf0-e9d2b8fb4730
+
+	column group_key
+		dataType: string
+		isHidden
+		lineageTag: c7438135-301f-4043-8a11-5b8da66361be
+		summarizeBy: none
+		sourceColumn: group_key
+
+		annotation SummarizationSetBy = User
+
+	column group_type
+		dataType: string
+		isHidden
+		lineageTag: e49edea6-c9cd-44f1-b6a6-af7d3b0fb203
+		summarizeBy: none
+		sourceColumn: group_type
+
+		annotation SummarizationSetBy = User
+
+	column group_code
+		dataType: string
+		isHidden
+		lineageTag: 1434d7c7-0ec5-48e5-815b-0bce3aa33e0a
+		summarizeBy: none
+		sourceColumn: group_code
+
+		annotation SummarizationSetBy = User
+
+	column Group
+		dataType: string
+		lineageTag: 483eb718-f1f4-45ac-be42-d820a4006b51
+		summarizeBy: none
+		sourceColumn: group_name
+		sortByColumn: group_sort
+
+		annotation SummarizationSetBy = User
+
+	/// World, region, or income group. 'At the time' uses the classification in force in that year/quarter; 'FY27' applies today's groups to all years.
+	column Classification
+		dataType: string
+		lineageTag: 863a172e-e006-48be-b269-3b0bb5b873b1
+		summarizeBy: none
+		sourceColumn: classification
+		sortByColumn: classification_sort
+
+		annotation SummarizationSetBy = User
+
+	column classification_sort
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1fe5b423-0a6c-47c0-a077-3063aac187dd
+		summarizeBy: none
+		sourceColumn: classification_sort
+
+		annotation SummarizationSetBy = User
+
+	column group_sort
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 46bb6a46-c5c4-493e-ac7a-3e6be66f13e7
+		summarizeBy: none
+		sourceColumn: group_sort
+
+		annotation SummarizationSetBy = User
+
+	partition dim_group = m
+		mode: import
+		source =
+				let
+				  Speed = Table.SelectColumns(agg_speed_group_quarter, {"group_key", "group_type", "group_code", "group_name"}),
+				  Indicators = Table.SelectColumns(agg_indicator_group_year, {"group_key", "group_type", "group_code", "group_name"}),
+				  Groups = Table.Distinct(Table.Combine({Speed, Indicators}), {"group_key"}),
+				  #"Added classification" = Table.AddColumn(Groups, "classification", each if [group_type] = "world" then "World" else if [group_type] = "region" then "Region" else if [group_type] = "income_as_was" then "Income group (classification at the time)" else "Income group (FY27 classification)", type text),
+				  #"Added classification sort" = Table.AddColumn(#"Added classification", "classification_sort", each if [group_type] = "world" then 0 else if [group_type] = "region" then 1 else if [group_type] = "income_as_was" then 2 else 3, Int64.Type),
+				  #"Added group sort" = Table.AddColumn(#"Added classification sort", "group_sort", each if [group_type] = "world" then 0 else if [group_code] = "LIC" then 1 else if [group_code] = "LMC" then 2 else if [group_code] = "UMC" then 3 else if [group_code] = "HIC" then 4 else 10, Int64.Type)
+				in
+				  #"Added group sort"
+
+	annotation PBI_ResultType = Table
+

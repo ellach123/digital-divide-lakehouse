@@ -1,0 +1,30 @@
+model Model
+	culture: en-GB
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["dim_country", "dim_quarter", "dim_year", "dim_connection", "dim_group", "dim_municipality", "dim_indicator", "fct_speed_country_quarter", "fct_speed_municipality_quarter", "agg_speed_group_quarter", "agg_indicator_group_year", "mart_country_year", "DatabricksHost", "HttpPath"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table dim_country
+ref table dim_quarter
+ref table fct_speed_country_quarter
+ref table dim_year
+ref table dim_connection
+ref table dim_group
+ref table dim_municipality
+ref table dim_indicator
+ref table fct_speed_municipality_quarter
+ref table agg_speed_group_quarter
+ref table agg_indicator_group_year
+ref table mart_country_year
+
+ref cultureInfo en-GB
+

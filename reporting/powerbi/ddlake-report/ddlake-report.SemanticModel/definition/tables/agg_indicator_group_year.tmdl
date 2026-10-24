@@ -1,0 +1,144 @@
+/// WDI indicators per world/region/income group and year, population-weighted in dbt, with coverage.
+table agg_indicator_group_year
+	lineageTag: 7cd2137d-b516-42fe-bd1f-57a7b98230fc
+
+	/// Group value computed in dbt (not re-aggregated here). Blank when reporting countries cover < 90% of the group population.
+	measure 'Group Value' = IF ( HASONEVALUE ( dim_group[group_key] ) && HASONEVALUE ( dim_indicator[indicator_code] ) && HASONEVALUE ( dim_year[Year] ), CALCULATE ( MAX ( agg_indicator_group_year[value] ), KEEPFILTERS ( agg_indicator_group_year[is_reliable] = TRUE () ) ) )
+		formatString: #,0.0
+		displayFolder: Indicators (groups)
+		lineageTag: 641b80fb-6173-49a5-bf48-5ef275576803
+
+	/// Group value even when coverage is below 90%. For tooltips only.
+	measure 'Group Value (incl. low coverage)' = IF ( HASONEVALUE ( dim_group[group_key] ) && HASONEVALUE ( dim_indicator[indicator_code] ) && HASONEVALUE ( dim_year[Year] ), MAX ( agg_indicator_group_year[value] ) )
+		formatString: #,0.0
+		displayFolder: Indicators (groups)
+		lineageTag: 3e851c11-5c49-4378-a7e7-1dba11153de1
+
+	/// Share of the group population living in countries that report the indicator.
+	measure 'Population Coverage' = IF ( HASONEVALUE ( dim_group[group_key] ) && HASONEVALUE ( dim_indicator[indicator_code] ) && HASONEVALUE ( dim_year[Year] ), MAX ( agg_indicator_group_year[population_coverage] ) )
+		formatString: 0.0%
+		displayFolder: Indicators (groups)
+		lineageTag: 625f6e77-4061-4df0-8696-53c8fa9945ea
+
+	/// Countries with a value for the indicator in that year.
+	measure 'Countries Reporting' = IF ( HASONEVALUE ( dim_group[group_key] ) && HASONEVALUE ( dim_indicator[indicator_code] ) && HASONEVALUE ( dim_year[Year] ), MAX ( agg_indicator_group_year[countries_reporting] ) )
+		formatString: #,0
+		displayFolder: Indicators (groups)
+		lineageTag: 5b5c790a-7043-4aeb-81d0-37f4f3794c31
+
+	column group_type
+		dataType: string
+		isHidden
+		lineageTag: ff2472d4-19fd-4dda-9126-f984ab787dcb
+		summarizeBy: none
+		sourceColumn: group_type
+
+		annotation SummarizationSetBy = User
+
+	column group_code
+		dataType: string
+		isHidden
+		lineageTag: 4642126f-37a2-490d-aab8-df8fdb702d34
+		summarizeBy: none
+		sourceColumn: group_code
+
+		annotation SummarizationSetBy = User
+
+	column group_name
+		dataType: string
+		isHidden
+		lineageTag: 0fd70e44-966d-40c0-997e-e6792b88fe11
+		summarizeBy: none
+		sourceColumn: group_name
+
+		annotation SummarizationSetBy = User
+
+	column indicator_code
+		dataType: string
+		isHidden
+		lineageTag: b55dad56-a6d7-4cbe-9b35-76d246765d6a
+		summarizeBy: none
+		sourceColumn: indicator_code
+
+		annotation SummarizationSetBy = User
+
+	column year
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 31bcba3b-df7d-4c13-84f7-0d9e8efad5e5
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = User
+
+	column value
+		dataType: double
+		isHidden
+		lineageTag: 4136f90a-a563-478e-9988-e6ed1ac926b3
+		summarizeBy: none
+		sourceColumn: value
+
+		annotation SummarizationSetBy = User
+
+	column countries_reporting
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 07542aaa-69a3-479e-88ff-417bdfac4a1e
+		summarizeBy: none
+		sourceColumn: countries_reporting
+
+		annotation SummarizationSetBy = User
+
+	column group_countries
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e7b3649a-1e3f-4828-a2bd-3e4a3b3c2537
+		summarizeBy: none
+		sourceColumn: group_countries
+
+		annotation SummarizationSetBy = User
+
+	column population_coverage
+		dataType: double
+		isHidden
+		lineageTag: 4a2a26a3-23bd-4a7b-a615-d00b7208c2fd
+		summarizeBy: none
+		sourceColumn: population_coverage
+
+		annotation SummarizationSetBy = User
+
+	column is_reliable
+		dataType: boolean
+		isHidden
+		lineageTag: 7f28d960-2b7a-466b-8a6e-e5df44ac99d9
+		summarizeBy: none
+		sourceColumn: is_reliable
+
+		annotation SummarizationSetBy = User
+
+	column group_key
+		dataType: string
+		isHidden
+		lineageTag: bae65c8f-1bcc-4b2e-980e-00b2f99af476
+		summarizeBy: none
+		sourceColumn: group_key
+
+		annotation SummarizationSetBy = User
+
+	partition agg_indicator_group_year = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "agg_indicator_group_year", Kind = "Table"]}[Data],
+				  #"Added group key" = Table.AddColumn(#"Navigation 3", "group_key", each [group_type] & "|" & [group_code], type text)
+				in
+				  #"Added group key"
+
+	annotation PBI_ResultType = Table
+

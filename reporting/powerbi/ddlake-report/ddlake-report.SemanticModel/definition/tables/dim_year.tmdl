@@ -1,0 +1,24 @@
+/// Calendar years 2000-2026 for WDI indicators.
+table dim_year
+	lineageTag: 620aa52e-a5b8-4c7c-b42e-37e2db9b9d66
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 58a55b09-f6bc-4d99-a734-c67f2bf3ef02
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+	partition dim_year = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromList({2000..2026}, Splitter.SplitByNothing(), {"Year"}),
+				  Typed = Table.TransformColumnTypes(Source, {{"Year", Int64.Type}})
+				in
+				  Typed
+
+	annotation PBI_ResultType = Table
+

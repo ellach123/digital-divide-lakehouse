@@ -1,0 +1,63 @@
+/// Dutch municipalities (CBS/PDOK, current boundaries).
+table dim_municipality
+	lineageTag: a7d682ef-b3cd-4ba9-b20c-b0cfecdb68c4
+
+	column municipality_code
+		dataType: string
+		isHidden
+		lineageTag: 2c086308-1a4b-44f1-b87d-ca63fd007f3a
+		summarizeBy: none
+		sourceColumn: municipality_code
+
+		annotation SummarizationSetBy = User
+
+	column Municipality
+		dataType: string
+		lineageTag: e3787b86-2ffc-4509-ab5b-4a79f57cfe6e
+		summarizeBy: none
+		sourceColumn: municipality_name
+
+		annotation SummarizationSetBy = User
+
+	column province_code
+		dataType: string
+		isHidden
+		lineageTag: acba1537-1343-4f21-845e-3a46afa02974
+		summarizeBy: none
+		sourceColumn: province_code
+
+		annotation SummarizationSetBy = User
+
+	column Province
+		dataType: string
+		lineageTag: 67b2a09e-1aca-4150-b53a-1ac685d5b28d
+		summarizeBy: none
+		sourceColumn: province_name
+
+		annotation SummarizationSetBy = User
+
+	column boundaries_retrieved
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: 47ba920e-7847-4421-b82f-7b8a59e5fe58
+		summarizeBy: none
+		sourceColumn: boundaries_retrieved
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_municipality = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "dim_municipality", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

@@ -29,6 +29,8 @@ transform/dbt/logs/
 transform/dbt/.user.yml
 
 # Secrets / local
+# Power BI Desktop writes caches and user settings next to an opened project
+reporting/powerbi/**/.pbi/
 .databricks/
 .env
 .databrickscfg

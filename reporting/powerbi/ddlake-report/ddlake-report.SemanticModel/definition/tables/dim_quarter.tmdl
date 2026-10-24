@@ -1,0 +1,69 @@
+/// Ookla quarters loaded (latest 8).
+table dim_quarter
+	lineageTag: af24568f-23c1-4e4d-99a4-bbe745e1f83e
+
+	column quarter_start
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: 49b22247-37ec-409a-8761-7fa877b54684
+		summarizeBy: none
+		sourceColumn: quarter_start
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column quarter_end
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: 9ebe788a-c107-495e-ba4d-b790c74cbd08
+		summarizeBy: none
+		sourceColumn: quarter_end
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 5514a998-8891-4ff3-842b-4f8cb6f628a3
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = User
+
+	column Quarter
+		dataType: string
+		lineageTag: 998dad92-23f8-41a1-843f-25b353cc709c
+		summarizeBy: none
+		sourceColumn: quarter_label
+		sortByColumn: quarter_start
+
+		annotation SummarizationSetBy = User
+
+	column 'Quarter number'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ef1646cc-ce82-4f10-a3f4-b096e7ed4c8d
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = User
+
+	partition dim_quarter = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "dim_quarter", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

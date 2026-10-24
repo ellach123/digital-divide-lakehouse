@@ -1,0 +1,277 @@
+/// Ookla speed per Dutch municipality, connection type and quarter; *_4q columns pool the latest 4 quarters.
+table fct_speed_municipality_quarter
+	lineageTag: 483cd9ef-eb7a-4259-8ea9-2147468344a2
+
+	/// Ookla speed tests (Dutch municipalities).
+	measure 'NL Speed Tests' = SUM ( fct_speed_municipality_quarter[tests] )
+		formatString: #,0
+		displayFolder: Speed (NL)
+		lineageTag: ef63566b-b7c9-417b-b99f-88496538efb2
+
+	/// Test-weighted mean download speed (Dutch municipalities): sum of speed x tests / sum of tests. Blank when fixed and mobile are mixed.
+	measure 'NL Download Mbps' = IF ( HASONEVALUE ( fct_speed_municipality_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_municipality_quarter[sum_d_kbps_x_tests] ), SUM ( fct_speed_municipality_quarter[tests] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (NL)
+		lineageTag: dc79baaf-e790-4001-8b13-ca9256819eab
+
+	/// Test-weighted mean upload speed (Dutch municipalities). Blank when fixed and mobile are mixed.
+	measure 'NL Upload Mbps' = IF ( HASONEVALUE ( fct_speed_municipality_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_municipality_quarter[sum_u_kbps_x_tests] ), SUM ( fct_speed_municipality_quarter[tests] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (NL)
+		lineageTag: 79b1fdf3-8a37-4056-8160-9e0101b03225
+
+	/// Test-weighted mean latency (Dutch municipalities). Blank when fixed and mobile are mixed.
+	measure 'NL Latency ms' = IF ( HASONEVALUE ( fct_speed_municipality_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_municipality_quarter[sum_lat_ms_x_tests] ), SUM ( fct_speed_municipality_quarter[tests] ) ) )
+		formatString: #,0
+		displayFolder: Speed (NL)
+		lineageTag: 7f399f2f-c7a8-4bf4-b7dd-c9dc89a7db6f
+
+	/// TRUE when there are fewer than 100 tests per quarter (same rule as dbt is_low_sample).
+	measure 'NL Low Sample' =
+			VAR quarters = DISTINCTCOUNT ( fct_speed_municipality_quarter[quarter_start] )
+			RETURN IF ( quarters > 0 && HASONEVALUE ( fct_speed_municipality_quarter[conn_type] ), [NL Speed Tests] < 100 * quarters )
+		displayFolder: Speed (NL)
+		lineageTag: 347cb93d-a405-4223-9a86-9330818998e0
+
+	/// Tests in the 4 quarters up to the selected quarter. Needs exactly one quarter and connection type.
+	measure 'NL Tests (4Q)' = IF ( HASONEVALUE ( fct_speed_municipality_quarter[quarter_start] ) && HASONEVALUE ( fct_speed_municipality_quarter[conn_type] ), SUM ( fct_speed_municipality_quarter[tests_4q] ) )
+		formatString: #,0
+		displayFolder: Speed (NL)
+		lineageTag: ec38b5f6-f85d-4460-b26a-ca6f9f0c5f87
+
+	/// Test-weighted download speed pooled over the 4 quarters up to the selected quarter (for sparse mobile data).
+	measure 'NL Download Mbps (4Q)' = IF ( HASONEVALUE ( fct_speed_municipality_quarter[quarter_start] ) && HASONEVALUE ( fct_speed_municipality_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_municipality_quarter[sum_d_kbps_x_tests_4q] ), SUM ( fct_speed_municipality_quarter[tests_4q] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (NL)
+		lineageTag: a08db200-d2b7-44ce-8143-69935c3def9d
+
+	/// Test-weighted upload speed pooled over 4 quarters.
+	measure 'NL Upload Mbps (4Q)' = IF ( HASONEVALUE ( fct_speed_municipality_quarter[quarter_start] ) && HASONEVALUE ( fct_speed_municipality_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_municipality_quarter[sum_u_kbps_x_tests_4q] ), SUM ( fct_speed_municipality_quarter[tests_4q] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (NL)
+		lineageTag: d7f6cad4-d758-48c7-8d7b-0199334efbd1
+
+	/// TRUE when the pooled 4 quarters still have fewer than 100 tests.
+	measure 'NL Low Sample (4Q)' =
+			VAR t = [NL Tests (4Q)]
+			RETURN IF ( NOT ISBLANK ( t ), t < 100 )
+		displayFolder: Speed (NL)
+		lineageTag: 90d07593-feb1-4057-9189-8493f84c85cf
+
+	column municipality_code
+		dataType: string
+		isHidden
+		lineageTag: 57c9a7c2-e8b5-42c5-85c5-88803b445d1b
+		summarizeBy: none
+		sourceColumn: municipality_code
+
+		annotation SummarizationSetBy = User
+
+	column conn_type
+		dataType: string
+		isHidden
+		lineageTag: d8cfc277-1b1d-4ad7-86c6-1e4980d730be
+		summarizeBy: none
+		sourceColumn: conn_type
+
+		annotation SummarizationSetBy = User
+
+	column quarter_start
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: 3e799659-1951-4483-bf85-fe7bc8c31558
+		summarizeBy: none
+		sourceColumn: quarter_start
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6b0deec1-283e-4cfc-9b56-6393f2f2168d
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = User
+
+	column quarter
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e0c96a95-01b6-47f6-8e23-9bdc927bc395
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = User
+
+	column tiles
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6d1cabdb-3b2c-45b1-a5a0-260483c39784
+		summarizeBy: none
+		sourceColumn: tiles
+
+		annotation SummarizationSetBy = User
+
+	column tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4df6c956-745a-4435-90b8-36d9d499cbd6
+		summarizeBy: none
+		sourceColumn: tests
+
+		annotation SummarizationSetBy = User
+
+	column devices
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9f2523c2-1ea4-4c75-9a49-8e4234bc9b71
+		summarizeBy: none
+		sourceColumn: devices
+
+		annotation SummarizationSetBy = User
+
+	column sum_d_kbps_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 51ecaf21-62f6-44b7-9811-5e5414a3222d
+		summarizeBy: none
+		sourceColumn: sum_d_kbps_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column sum_u_kbps_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f818ef42-af3c-4817-8b21-8056c2106c9f
+		summarizeBy: none
+		sourceColumn: sum_u_kbps_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column sum_lat_ms_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0f126b6e-4eb4-4ee9-b508-5a77349306ea
+		summarizeBy: none
+		sourceColumn: sum_lat_ms_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column avg_download_mbps
+		dataType: double
+		isHidden
+		lineageTag: d680249c-722a-46a3-bfab-b05cf0c26ecb
+		summarizeBy: none
+		sourceColumn: avg_download_mbps
+
+		annotation SummarizationSetBy = User
+
+	column avg_upload_mbps
+		dataType: double
+		isHidden
+		lineageTag: 432cacc9-ab55-42cf-9dd1-b6343e9a2367
+		summarizeBy: none
+		sourceColumn: avg_upload_mbps
+
+		annotation SummarizationSetBy = User
+
+	column avg_latency_ms
+		dataType: double
+		isHidden
+		lineageTag: 0e7b9a39-8d9e-4a91-8198-5e0adfb6337c
+		summarizeBy: none
+		sourceColumn: avg_latency_ms
+
+		annotation SummarizationSetBy = User
+
+	column is_low_sample
+		dataType: boolean
+		isHidden
+		lineageTag: 2980e212-38ad-4da1-8655-845fa0add905
+		summarizeBy: none
+		sourceColumn: is_low_sample
+
+		annotation SummarizationSetBy = User
+
+	column quarters_4q
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3eddc89c-4c05-44a7-a86a-7da7fc7d327e
+		summarizeBy: none
+		sourceColumn: quarters_4q
+
+		annotation SummarizationSetBy = User
+
+	column tests_4q
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 75a3d93a-b51d-4e6b-a222-4d422d828953
+		summarizeBy: none
+		sourceColumn: tests_4q
+
+		annotation SummarizationSetBy = User
+
+	column sum_d_kbps_x_tests_4q
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 59f2211c-5768-47a0-af74-a85be78dfc2c
+		summarizeBy: none
+		sourceColumn: sum_d_kbps_x_tests_4q
+
+		annotation SummarizationSetBy = User
+
+	column sum_u_kbps_x_tests_4q
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 61659e27-9b33-4ec3-a103-08671696bb19
+		summarizeBy: none
+		sourceColumn: sum_u_kbps_x_tests_4q
+
+		annotation SummarizationSetBy = User
+
+	column avg_download_mbps_4q
+		dataType: double
+		isHidden
+		lineageTag: 46047632-11cb-4787-81bb-ee18e9e1df70
+		summarizeBy: none
+		sourceColumn: avg_download_mbps_4q
+
+		annotation SummarizationSetBy = User
+
+	column avg_upload_mbps_4q
+		dataType: double
+		isHidden
+		lineageTag: 6c5a1f93-1123-444b-bf2e-f5fd0941b7ea
+		summarizeBy: none
+		sourceColumn: avg_upload_mbps_4q
+
+		annotation SummarizationSetBy = User
+
+	partition fct_speed_municipality_quarter = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "fct_speed_municipality_quarter", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

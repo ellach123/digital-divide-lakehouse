@@ -1,0 +1,56 @@
+relationship AutoDetected_71c6668a-202a-49af-974d-fb51cf26c7d5
+	fromColumn: fct_speed_country_quarter.country_code
+	toColumn: dim_country.country_code
+
+relationship c8f634b7-cd53-44b6-4677-36f7db0f644a
+	fromColumn: fct_speed_country_quarter.quarter_start
+	toColumn: dim_quarter.quarter_start
+
+relationship dcd2d124-d7a4-4602-b997-5783e7cd7411
+	fromColumn: fct_speed_country_quarter.conn_type
+	toColumn: dim_connection.conn_type
+
+relationship c06eb822-53fc-46f9-acca-4382bf82338d
+	fromColumn: fct_speed_municipality_quarter.municipality_code
+	toColumn: dim_municipality.municipality_code
+
+relationship f8622c18-d528-45f3-8370-0389848993cf
+	fromColumn: fct_speed_municipality_quarter.quarter_start
+	toColumn: dim_quarter.quarter_start
+
+relationship 2df2bb59-4599-4518-a865-307a2f4f4fb8
+	fromColumn: fct_speed_municipality_quarter.conn_type
+	toColumn: dim_connection.conn_type
+
+relationship 4c42ee05-2e04-40f4-941a-ec5a33280daa
+	fromColumn: agg_speed_group_quarter.group_key
+	toColumn: dim_group.group_key
+
+relationship d6019332-1e52-484e-a8aa-82f086e65f8e
+	fromColumn: agg_speed_group_quarter.quarter_start
+	toColumn: dim_quarter.quarter_start
+
+relationship 3c036cee-fa19-45a8-b5c1-17f5114e163c
+	fromColumn: agg_speed_group_quarter.conn_type
+	toColumn: dim_connection.conn_type
+
+relationship 4ce4981f-8cab-4fd3-a458-b314b8352de5
+	fromColumn: agg_indicator_group_year.group_key
+	toColumn: dim_group.group_key
+
+relationship a95a4677-09c3-4a36-bdab-b634d00f50e7
+	fromColumn: agg_indicator_group_year.indicator_code
+	toColumn: dim_indicator.indicator_code
+
+relationship db2c2ced-ef80-4a4d-b153-cea9d60ba2a4
+	fromColumn: agg_indicator_group_year.year
+	toColumn: dim_year.Year
+
+relationship 13847bb4-386e-4b50-a6f6-e09b559d8121
+	fromColumn: mart_country_year.country_code
+	toColumn: dim_country.country_code
+
+relationship 1fd158ee-a3f8-4dad-a469-565d484baef6
+	fromColumn: mart_country_year.year
+	toColumn: dim_year.Year
+

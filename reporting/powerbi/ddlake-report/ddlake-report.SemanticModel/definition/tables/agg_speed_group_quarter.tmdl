@@ -1,0 +1,193 @@
+/// Ookla speed per world/region/income group, connection type and quarter (additive sums).
+table agg_speed_group_quarter
+	lineageTag: 5fde80a6-5097-4e04-9c54-bbb3aaeaa316
+
+	/// Tests in the group. Needs one classification (groups overlap across classifications).
+	measure 'Group Tests' = IF ( HASONEVALUE ( dim_group[group_type] ), SUM ( agg_speed_group_quarter[tests] ) )
+		formatString: #,0
+		displayFolder: Speed (groups)
+		lineageTag: 41ed5926-0877-48a4-9986-15db6dc11eac
+
+	/// Test-weighted download speed of the group. Needs one classification and one connection type.
+	measure 'Group Download Mbps' = IF ( HASONEVALUE ( dim_group[group_type] ) && HASONEVALUE ( agg_speed_group_quarter[conn_type] ), DIVIDE ( SUM ( agg_speed_group_quarter[sum_d_kbps_x_tests] ), SUM ( agg_speed_group_quarter[tests] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (groups)
+		lineageTag: bf4ab485-b9d1-4bf2-bff4-027e187930ab
+
+	/// Test-weighted upload speed of the group.
+	measure 'Group Upload Mbps' = IF ( HASONEVALUE ( dim_group[group_type] ) && HASONEVALUE ( agg_speed_group_quarter[conn_type] ), DIVIDE ( SUM ( agg_speed_group_quarter[sum_u_kbps_x_tests] ), SUM ( agg_speed_group_quarter[tests] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (groups)
+		lineageTag: d38148df-9bb9-4f95-82d5-70d20c042bf1
+
+	/// Test-weighted latency of the group.
+	measure 'Group Latency ms' = IF ( HASONEVALUE ( dim_group[group_type] ) && HASONEVALUE ( agg_speed_group_quarter[conn_type] ), DIVIDE ( SUM ( agg_speed_group_quarter[sum_lat_ms_x_tests] ), SUM ( agg_speed_group_quarter[tests] ) ) )
+		formatString: #,0
+		displayFolder: Speed (groups)
+		lineageTag: 7d1bd4ed-cb38-47cf-9d15-d777939e6515
+
+	/// Download speed over all units with tests, including those outside WDI.
+	measure 'World Download Mbps' = CALCULATE ( [Group Download Mbps], REMOVEFILTERS ( dim_group ), dim_group[group_type] = "world" )
+		formatString: #,0.0
+		displayFolder: Speed (groups)
+		lineageTag: 6ca30581-59c7-48bb-ba27-a59b742dae79
+
+	/// High-income vs low-income download speed. Uses the selected income classification, else 'at the time'.
+	measure 'HIC/LIC Download Ratio' =
+			VAR classification = SELECTEDVALUE ( dim_group[group_type], "income_as_was" )
+			VAR t = IF ( classification IN { "income_as_was", "income_current" }, classification, "income_as_was" )
+			VAR hi = CALCULATE ( [Group Download Mbps], REMOVEFILTERS ( dim_group ), dim_group[group_type] = t, dim_group[group_code] = "HIC" )
+			VAR lo = CALCULATE ( [Group Download Mbps], REMOVEFILTERS ( dim_group ), dim_group[group_type] = t, dim_group[group_code] = "LIC" )
+			RETURN DIVIDE ( hi, lo )
+		formatString: 0.0
+		displayFolder: Speed (groups)
+		lineageTag: 62fa7cf8-10a1-4fad-a4a1-9bfc5b62f15a
+
+	column group_type
+		dataType: string
+		isHidden
+		lineageTag: eca687aa-20eb-4e77-8927-7f58754ac702
+		summarizeBy: none
+		sourceColumn: group_type
+
+		annotation SummarizationSetBy = User
+
+	column group_code
+		dataType: string
+		isHidden
+		lineageTag: 6c8231be-c938-4519-b94d-49a93ca564c8
+		summarizeBy: none
+		sourceColumn: group_code
+
+		annotation SummarizationSetBy = User
+
+	column group_name
+		dataType: string
+		isHidden
+		lineageTag: 0bf862ae-50d8-4b2b-ac66-2b115fa70f02
+		summarizeBy: none
+		sourceColumn: group_name
+
+		annotation SummarizationSetBy = User
+
+	column conn_type
+		dataType: string
+		isHidden
+		lineageTag: b59e82a9-326e-428a-a8fa-f9b3f212067e
+		summarizeBy: none
+		sourceColumn: conn_type
+
+		annotation SummarizationSetBy = User
+
+	column quarter_start
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: 9b858be7-b0a9-4fa6-91d2-f125dd28867d
+		summarizeBy: none
+		sourceColumn: quarter_start
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column countries
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b9d2dc87-d59d-4ab0-aabb-e10992f643cc
+		summarizeBy: none
+		sourceColumn: countries
+
+		annotation SummarizationSetBy = User
+
+	column tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c97701af-92ef-4f86-8c1d-09b1a150799d
+		summarizeBy: none
+		sourceColumn: tests
+
+		annotation SummarizationSetBy = User
+
+	column sum_d_kbps_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ca69dad3-3318-4ec8-871a-9a67df6cf35f
+		summarizeBy: none
+		sourceColumn: sum_d_kbps_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column sum_u_kbps_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e02bd96b-4f1f-46e4-a8c7-62893e5e417d
+		summarizeBy: none
+		sourceColumn: sum_u_kbps_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column sum_lat_ms_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a8325841-f55e-4472-aa79-f0863454d28f
+		summarizeBy: none
+		sourceColumn: sum_lat_ms_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column avg_download_mbps
+		dataType: double
+		isHidden
+		lineageTag: a97455cc-bd57-4aab-bb53-9f5c8c0013f7
+		summarizeBy: none
+		sourceColumn: avg_download_mbps
+
+		annotation SummarizationSetBy = User
+
+	column avg_upload_mbps
+		dataType: double
+		isHidden
+		lineageTag: b2863638-28b8-4db6-ab73-fb7d6880574e
+		summarizeBy: none
+		sourceColumn: avg_upload_mbps
+
+		annotation SummarizationSetBy = User
+
+	column avg_latency_ms
+		dataType: double
+		isHidden
+		lineageTag: 630a3c15-516f-4ee1-8b0a-227e00c165f7
+		summarizeBy: none
+		sourceColumn: avg_latency_ms
+
+		annotation SummarizationSetBy = User
+
+	column group_key
+		dataType: string
+		isHidden
+		lineageTag: 6e60021c-f066-43d8-b01f-8480c18542d1
+		summarizeBy: none
+		sourceColumn: group_key
+
+		annotation SummarizationSetBy = User
+
+	partition agg_speed_group_quarter = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "agg_speed_group_quarter", Kind = "Table"]}[Data],
+				  #"Added group key" = Table.AddColumn(#"Navigation 3", "group_key", each [group_type] & "|" & [group_code], type text)
+				in
+				  #"Added group key"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,42 @@
+/// Ookla connection types.
+table dim_connection
+	lineageTag: 0df04de1-1782-4d20-af35-3f3b385e2ecb
+
+	column conn_type
+		dataType: string
+		isHidden
+		lineageTag: 4876f806-4b9f-402e-b2ed-a7adb24019e3
+		summarizeBy: none
+		sourceColumn: conn_type
+
+		annotation SummarizationSetBy = User
+
+	column Connection
+		dataType: string
+		lineageTag: 98fdeb61-4fe7-4b31-b754-aca93cf35291
+		summarizeBy: none
+		sourceColumn: connection
+		sortByColumn: connection_sort
+
+		annotation SummarizationSetBy = User
+
+	column connection_sort
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3d822e80-a136-4a5e-9fed-7c937269fffb
+		summarizeBy: none
+		sourceColumn: connection_sort
+
+		annotation SummarizationSetBy = User
+
+	partition dim_connection = m
+		mode: import
+		source =
+				let
+				  Source = #table(type table [conn_type = text, connection = text, connection_sort = Int64.Type], {{"fixed", "Fixed broadband", 1}, {"mobile", "Mobile", 2}})
+				in
+				  Source
+
+	annotation PBI_ResultType = Table
+

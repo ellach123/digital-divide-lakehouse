@@ -1,0 +1,194 @@
+/// Ookla speed per country, connection type and quarter (additive sums).
+table fct_speed_country_quarter
+	lineageTag: c74b17cd-1788-422c-b485-daca6925d6c2
+
+	/// Ookla speed tests (countries).
+	measure 'Speed Tests' = SUM ( fct_speed_country_quarter[tests] )
+		formatString: #,0
+		displayFolder: Speed (countries)
+		lineageTag: 048a6b55-e0ef-4904-9c63-256a457b6261
+
+	/// Test-weighted mean download speed (countries): sum of speed x tests / sum of tests. Blank when fixed and mobile are mixed.
+	measure 'Download Mbps' = IF ( HASONEVALUE ( fct_speed_country_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_country_quarter[sum_d_kbps_x_tests] ), SUM ( fct_speed_country_quarter[tests] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (countries)
+		lineageTag: 9c583cfa-7189-471d-b15c-4b96caa4d9c5
+
+	/// Test-weighted mean upload speed (countries). Blank when fixed and mobile are mixed.
+	measure 'Upload Mbps' = IF ( HASONEVALUE ( fct_speed_country_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_country_quarter[sum_u_kbps_x_tests] ), SUM ( fct_speed_country_quarter[tests] ) ) / 1000 )
+		formatString: #,0.0
+		displayFolder: Speed (countries)
+		lineageTag: 339bf763-8fb1-4b84-b0a2-d58ec0ef0db5
+
+	/// Test-weighted mean latency (countries). Blank when fixed and mobile are mixed.
+	measure 'Latency ms' = IF ( HASONEVALUE ( fct_speed_country_quarter[conn_type] ), DIVIDE ( SUM ( fct_speed_country_quarter[sum_lat_ms_x_tests] ), SUM ( fct_speed_country_quarter[tests] ) ) )
+		formatString: #,0
+		displayFolder: Speed (countries)
+		lineageTag: 62fba7bf-d299-464c-bd00-bb7166767664
+
+	/// TRUE when there are fewer than 1000 tests per quarter (same rule as dbt is_low_sample).
+	measure 'Low Sample' =
+			VAR quarters = DISTINCTCOUNT ( fct_speed_country_quarter[quarter_start] )
+			RETURN IF ( quarters > 0 && HASONEVALUE ( fct_speed_country_quarter[conn_type] ), [Speed Tests] < 1000 * quarters )
+		displayFolder: Speed (countries)
+		lineageTag: acb59a7e-a6cc-4853-827b-defd4437c165
+
+	column country_code
+		dataType: string
+		isHidden
+		lineageTag: dd09ddb3-6ca1-4d7c-b7bb-db77b2ad3686
+		summarizeBy: none
+		sourceColumn: country_code
+
+		annotation SummarizationSetBy = User
+
+	column conn_type
+		dataType: string
+		isHidden
+		lineageTag: 31e6b0e4-8169-4684-91f7-0ea81a4449b5
+		summarizeBy: none
+		sourceColumn: conn_type
+
+		annotation SummarizationSetBy = User
+
+	column quarter_start
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-mm-dd
+		lineageTag: 1f06763a-53d3-40cf-be97-6e6f1e70d6a8
+		summarizeBy: none
+		sourceColumn: quarter_start
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4911a6f3-470d-41ad-8655-4a000ad85d4a
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = User
+
+	column quarter
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a3f4ca76-6208-448f-bb65-b27bf920ec61
+		summarizeBy: none
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = User
+
+	column tiles
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6dc09eb3-cc7e-4670-95bf-8287edeca13c
+		summarizeBy: none
+		sourceColumn: tiles
+
+		annotation SummarizationSetBy = User
+
+	column tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6445e17c-fb62-4524-9eee-2b5661cc594b
+		summarizeBy: none
+		sourceColumn: tests
+
+		annotation SummarizationSetBy = User
+
+	column devices
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b331082e-6829-4609-9d03-ece5d2ee5e18
+		summarizeBy: none
+		sourceColumn: devices
+
+		annotation SummarizationSetBy = User
+
+	column sum_d_kbps_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 57b088bc-8ceb-489c-82c0-8ad8c15a2311
+		summarizeBy: none
+		sourceColumn: sum_d_kbps_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column sum_u_kbps_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2e4d32d6-973d-4e20-9776-8b21cc501a0c
+		summarizeBy: none
+		sourceColumn: sum_u_kbps_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column sum_lat_ms_x_tests
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ec0eb3c1-0372-4db6-bff3-2c3dfef3276d
+		summarizeBy: none
+		sourceColumn: sum_lat_ms_x_tests
+
+		annotation SummarizationSetBy = User
+
+	column avg_download_mbps
+		dataType: double
+		isHidden
+		lineageTag: c3da211c-92f8-4453-a50f-5958c8f51129
+		summarizeBy: none
+		sourceColumn: avg_download_mbps
+
+		annotation SummarizationSetBy = User
+
+	column avg_upload_mbps
+		dataType: double
+		isHidden
+		lineageTag: 84bbe60d-def5-42a9-8891-8da895e7bacd
+		summarizeBy: none
+		sourceColumn: avg_upload_mbps
+
+		annotation SummarizationSetBy = User
+
+	column avg_latency_ms
+		dataType: double
+		isHidden
+		lineageTag: ba287ae8-ec71-442e-9e41-77321af9d208
+		summarizeBy: none
+		sourceColumn: avg_latency_ms
+
+		annotation SummarizationSetBy = User
+
+	column is_low_sample
+		dataType: boolean
+		isHidden
+		lineageTag: 2bb2aab6-e415-496a-aef4-b36188416a75
+		summarizeBy: none
+		sourceColumn: is_low_sample
+
+		annotation SummarizationSetBy = User
+
+	partition fct_speed_country_quarter = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "fct_speed_country_quarter", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

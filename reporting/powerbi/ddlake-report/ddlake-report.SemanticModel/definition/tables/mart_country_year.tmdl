@@ -1,0 +1,234 @@
+/// One row per country and year: WDI indicators side by side plus yearly Ookla speed.
+table mart_country_year
+	lineageTag: b5a95be3-07a6-4c9b-8cc0-f85a33dcd322
+
+	/// Population of the countries in context.
+	measure 'Total Population' = SUM ( mart_country_year[Population] )
+		formatString: #,0
+		displayFolder: Indicators (countries)
+		lineageTag: 0ca17c79-2d74-4f61-adb7-8d69b14e94fc
+
+	/// Population-weighted share of internet users over the countries that report it.
+	measure 'Internet Users % (weighted)' =
+			VAR reporting = FILTER ( mart_country_year, NOT ISBLANK ( mart_country_year[Internet users (%)] ) && NOT ISBLANK ( mart_country_year[Population] ) )
+			RETURN DIVIDE ( SUMX ( reporting, mart_country_year[Internet users (%)] * mart_country_year[Population] ), SUMX ( reporting, mart_country_year[Population] ) )
+		formatString: #,0.0
+		displayFolder: Indicators (countries)
+		lineageTag: 2ed97b26-5304-4867-a3ab-28b1648d4ab7
+
+	/// Population-weighted GDP per capita (PPP) over the countries that report it.
+	measure 'GDP per Capita PPP (weighted)' =
+			VAR reporting = FILTER ( mart_country_year, NOT ISBLANK ( mart_country_year[GDP per capita, PPP] ) && NOT ISBLANK ( mart_country_year[Population] ) )
+			RETURN DIVIDE ( SUMX ( reporting, mart_country_year[GDP per capita, PPP] * mart_country_year[Population] ), SUMX ( reporting, mart_country_year[Population] ) )
+		formatString: #,0
+		displayFolder: Indicators (countries)
+		lineageTag: 2de04245-1c09-4b74-92a9-322a5911ed9f
+
+	column country_code
+		dataType: string
+		isHidden
+		lineageTag: 9debe0d8-49cf-4d3f-8fb2-5af2cbc97bd7
+		summarizeBy: none
+		sourceColumn: country_code
+
+		annotation SummarizationSetBy = User
+
+	column country_name
+		dataType: string
+		isHidden
+		lineageTag: 585736ff-1844-494b-b2af-6884d6bd98dc
+		summarizeBy: none
+		sourceColumn: country_name
+
+		annotation SummarizationSetBy = User
+
+	column region_name
+		dataType: string
+		isHidden
+		lineageTag: 96a4ef2b-cff6-4915-9fbd-447d807d4060
+		summarizeBy: none
+		sourceColumn: region_name
+
+		annotation SummarizationSetBy = User
+
+	column income_name_current
+		dataType: string
+		isHidden
+		lineageTag: f5b917a3-3fd5-4623-8db7-fa4c2dab51e5
+		summarizeBy: none
+		sourceColumn: income_name_current
+
+		annotation SummarizationSetBy = User
+
+	column year
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: da5d3dd0-f5fe-48c5-b85d-4a5a1836a683
+		summarizeBy: none
+		sourceColumn: year
+
+		annotation SummarizationSetBy = User
+
+	column 'Internet users (%)'
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 9b888ad4-9584-40ef-8fd3-fdec6c1a7fb1
+		summarizeBy: none
+		sourceColumn: internet_users_pct
+
+		annotation SummarizationSetBy = User
+
+	column 'Fixed broadband per 100'
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 6606e5f2-7022-4cef-9ce3-5750b882d822
+		summarizeBy: none
+		sourceColumn: fixed_broadband_per_100
+
+		annotation SummarizationSetBy = User
+
+	column 'Mobile subscriptions per 100'
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 0dc59215-1dec-410f-9d2b-836eb58b42a8
+		summarizeBy: none
+		sourceColumn: mobile_subscriptions_per_100
+
+		annotation SummarizationSetBy = User
+
+	column 'Secure servers per million'
+		dataType: double
+		formatString: #,0
+		lineageTag: 61e0bcdb-8e56-4bc4-b7e4-02edaad1b3b5
+		summarizeBy: none
+		sourceColumn: secure_servers_per_million
+
+		annotation SummarizationSetBy = User
+
+	column 'Electricity access (%)'
+		dataType: double
+		formatString: #,0.0
+		lineageTag: d93bcf86-653b-4744-84df-97e9d894b617
+		summarizeBy: none
+		sourceColumn: electricity_access_pct
+
+		annotation SummarizationSetBy = User
+
+	column 'Urban population (%)'
+		dataType: double
+		formatString: #,0.0
+		lineageTag: d43b5b2e-db34-4473-a4ca-2e1586d51e4f
+		summarizeBy: none
+		sourceColumn: urban_population_pct
+
+		annotation SummarizationSetBy = User
+
+	/// Current international $ (PPP). Default for cross-country comparison.
+	column 'GDP per capita, PPP'
+		dataType: double
+		formatString: #,0
+		lineageTag: b12c4908-0d1b-4645-a027-dd63eecd54c0
+		summarizeBy: none
+		sourceColumn: gdp_per_capita_ppp
+
+		annotation SummarizationSetBy = User
+
+	column 'GDP per capita, US$'
+		dataType: double
+		formatString: #,0
+		lineageTag: b075a18e-a8e0-4e5e-bf63-f49baa1bfda7
+		summarizeBy: none
+		sourceColumn: gdp_per_capita_usd
+
+		annotation SummarizationSetBy = User
+
+	column Population
+		dataType: double
+		formatString: #,0
+		lineageTag: 0cfeecea-3c05-4f26-9dcf-552be0a66b58
+		summarizeBy: none
+		sourceColumn: population
+
+		annotation SummarizationSetBy = User
+
+	column 'Tertiary enrolment (% gross)'
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 4938c384-3742-4775-84f0-ae61b5a9e4a7
+		summarizeBy: none
+		sourceColumn: tertiary_enrolment_gross_pct
+
+		annotation SummarizationSetBy = User
+
+	column quarters_fixed
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 51c8a1fe-6130-463c-b3d4-0fff2b90a489
+		summarizeBy: none
+		sourceColumn: quarters_fixed
+
+		annotation SummarizationSetBy = User
+
+	column tests_fixed
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7e0e8f31-3849-42c1-99f1-df8f5281ec6c
+		summarizeBy: none
+		sourceColumn: tests_fixed
+
+		annotation SummarizationSetBy = User
+
+	column fixed_download_mbps
+		dataType: double
+		isHidden
+		lineageTag: b23bf143-7a7a-4835-ae7b-408240b93b00
+		summarizeBy: none
+		sourceColumn: fixed_download_mbps
+
+		annotation SummarizationSetBy = User
+
+	column quarters_mobile
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e460dc8d-eeb8-46a7-8b7f-c79fdba323ad
+		summarizeBy: none
+		sourceColumn: quarters_mobile
+
+		annotation SummarizationSetBy = User
+
+	column tests_mobile
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6a621ea1-b3b5-44ec-9e81-ac1ecd005a5c
+		summarizeBy: none
+		sourceColumn: tests_mobile
+
+		annotation SummarizationSetBy = User
+
+	column mobile_download_mbps
+		dataType: double
+		isHidden
+		lineageTag: c263fc9f-b0d4-4028-81f8-212205540f78
+		summarizeBy: none
+		sourceColumn: mobile_download_mbps
+
+		annotation SummarizationSetBy = User
+
+	partition mart_country_year = m
+		mode: import
+		source =
+				let
+				  Source = DatabricksMultiCloud.Catalogs(DatabricksHost, HttpPath, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navigation 1" = Source{[Name = "workspace", Kind = "Database"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "digital_divide_dev_gold", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_country_year", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

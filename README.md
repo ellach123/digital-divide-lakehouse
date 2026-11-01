@@ -14,9 +14,13 @@ An end-to-end data platform that measures the digital divide, from global countr
 | 4 | Ookla global country-level aggregation (Natural Earth + H3 tessellation), performance notes | ✅ |
 | 5 | dbt Gold star schema, SCD2 income history (FY89–FY27) + snapshot, 54 tests | ✅ |
 | 6 | Airflow 3 + Docker task image, Databricks Asset Bundle, GitHub Actions CI, remote Terraform state | ✅ |
-| 7 | Power BI report | ⏳ |
+| 7 | Power BI report as a Power BI project (PBIP): star-schema semantic model, coverage rules, five pages | ⏳ |
 
 ## Architecture
+
+![Pipeline from public sources to the Power BI report](docs/images/architecture.png)
+
+The same pipeline in more detail:
 
 ```
             Terraform (Azure resources, pipeline identity, budget alert; remote state)
@@ -59,6 +63,7 @@ notebooks/         Databricks notebooks (source format): validation, Bronze, Sil
 tools/             Developer tools, e.g. exporting clean notebook run snapshots
 transform/dbt/     dbt project: staging views, Gold star schema, SCD2, seed, snapshot
 orchestration/     Airflow DAG and the script that sets its connections and variables
+reporting/powerbi/ Power BI project (PBIP): semantic model (TMDL) and report (PBIR)
 databricks.yml     Databricks jobs as code (Asset Bundle)
 Dockerfile         Task image for the extractor, SAS rotation and dbt
 .github/workflows/ CI and image build
@@ -66,7 +71,7 @@ docs/              Decision records (ADRs) and weekly checklists
 docs/notebook-runs/  Executed notebook snapshots (.ipynb with outputs)
 ```
 
-Design decisions are recorded in [ADR 0001: platform choice](docs/adr/0001-platform-choice.md), [ADR 0002: World Bank ingestion](docs/adr/0002-worldbank-ingestion.md), [ADR 0003: Ookla ingestion and Dutch municipalities](docs/adr/0003-ookla-ingestion.md), [ADR 0004: global country-level aggregation](docs/adr/0004-ookla-country-aggregation.md), [ADR 0005: dbt Gold layer](docs/adr/0005-dbt-gold.md) and [ADR 0006: orchestration, task image, CI and remote state](docs/adr/0006-orchestration.md).
+Design decisions are recorded in [ADR 0001: platform choice](docs/adr/0001-platform-choice.md), [ADR 0002: World Bank ingestion](docs/adr/0002-worldbank-ingestion.md), [ADR 0003: Ookla ingestion and Dutch municipalities](docs/adr/0003-ookla-ingestion.md), [ADR 0004: global country-level aggregation](docs/adr/0004-ookla-country-aggregation.md), [ADR 0005: dbt Gold layer](docs/adr/0005-dbt-gold.md), [ADR 0006: orchestration, task image, CI and remote state](docs/adr/0006-orchestration.md) and [ADR 0007: Power BI report](docs/adr/0007-power-bi-report.md).
 
 ## How to run (World Bank)
 
@@ -209,6 +214,32 @@ Keep in mind:
 - Start `airflow standalone` only once; a second instance on the same SQLite database means two schedulers.
 
 CI ([workflow](.github/workflows/ci.yml)) needs no secrets. To run the same checks locally: `ruff check .`, `pytest`, `dbt parse` in `transform/dbt` with placeholder `DBT_DATABRICKS_*` variables, and `terraform fmt -check -recursive` + `terraform validate`.
+
+## How to open the report
+
+The report is a Power BI project ([ADR 0007](docs/adr/0007-power-bi-report.md)) in `reporting/powerbi/ddlake-report/`. It needs Power BI Desktop (free, Windows; built with version 2.159) and read access to the Gold tables built above.
+
+1. Open `ddlake-report.pbip`. The pages are empty at first: the data cache is not in the repository.
+2. **Transform data > Edit parameters:** set `DatabricksHost` (the workspace host, without `https://`) and `HttpPath` (SQL warehouse > Connection details).
+3. **Refresh.** When asked for credentials, choose a personal access token with the `sql` scope (shown as *Account key* in the new connection dialog) and privacy level *Organizational*.
+
+| Page | Question |
+|---|---|
+| Overview | Where does the world stand? Latest internet use, world, Dutch and income-group broadband speed |
+| Global | How do countries compare? Internet use by region, GDP per capita vs fixed speed, fastest and slowest countries |
+| Income groups | Is the income gap closing? Internet use and speed by income group, with the classification of the year or today's |
+| Netherlands | Fixed speed by municipality (in progress) |
+| Methods | Sources, calculation rules, limitations and the pipeline |
+
+The model divides sums, never averages averages; a group value is hidden when reporting countries cover less than 90% of the group's population; and every "latest" value is found by the model, so a refresh with new data moves all pages forward.
+
+To change the report, work in a copy outside the repository (it holds the real parameter values and the data cache), then export it:
+
+```powershell
+python -m tools.export_pbip <path-to-working-copy>
+```
+
+The export copies an allowlist of project files, replaces the parameter values with placeholders and stops if it finds a host, token, path, e-mail address or other identifier.
 
 ## Cost control
 

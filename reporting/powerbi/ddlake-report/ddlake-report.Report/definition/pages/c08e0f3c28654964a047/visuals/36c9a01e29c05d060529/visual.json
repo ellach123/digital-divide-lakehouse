@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "36c9a01e29c05d060529",
+  "position": {
+    "x": 10.857965702317058,
+    "y": 950.07199895274255,
+    "z": 6000,
+    "height": 115.81830082471528,
+    "width": 1896.5246760047128,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Classification matters:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "16pt"
+                    }
+                  },
+                  {
+                    "value": " in 2005, 61.0% of people in countries that were high-income at the time were online, but only 52.7% in today's high-income countries, because several of them joined the group later. The same effect explains the drop in lower-middle-income speed in 2026 Q3 under \"classification at the time\": the FY27 list took effect in July 2026 and moved some countries between groups. Low-income data stop in 2019 (in 2016 under the FY27 list): since 2020, countries with about a fifth of the group's population (Sudan, Yemen, North Korea, Syria, South Sudan, Eritrea) have not reported, so the group value is hidden (coverage below 90%).",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

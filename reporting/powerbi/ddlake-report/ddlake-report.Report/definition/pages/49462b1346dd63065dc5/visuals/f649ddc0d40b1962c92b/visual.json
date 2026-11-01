@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "f649ddc0d40b1962c92b",
+  "position": {
+    "x": 10.857965702317058,
+    "y": 1007.9811493651001,
+    "z": 4000,
+    "height": 70.576777065060867,
+    "width": 1887.4763712527817,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Sources:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "16pt"
+                    }
+                  },
+                  {
+                    "value": " World Bank WDI (CC BY 4.0); Ookla Open Data speed tests (CC BY-NC-SA 4.0). Speeds are test-weighted means; group values count only years whose reporting countries cover at least 90% of the population. See Methods.",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

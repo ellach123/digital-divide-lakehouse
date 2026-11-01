@@ -26,6 +26,24 @@ table agg_indicator_group_year
 		displayFolder: Indicators (groups)
 		lineageTag: 5b5c790a-7043-4aeb-81d0-37f4f3794c31
 
+	/// Internet users (% of population) of one group in the latest year whose reporting countries cover at least 90% of its population.
+	measure 'Internet Users % (latest reliable)' =
+			VAR reliable_rows = CALCULATETABLE ( agg_indicator_group_year, REMOVEFILTERS ( dim_year ), REMOVEFILTERS ( dim_indicator ), agg_indicator_group_year[indicator_code] = "IT.NET.USER.ZS", agg_indicator_group_year[is_reliable] = TRUE () )
+			VAR y = MAXX ( reliable_rows, agg_indicator_group_year[year] )
+			RETURN IF ( HASONEVALUE ( dim_group[group_key] ), MAXX ( FILTER ( reliable_rows, agg_indicator_group_year[year] = y ), agg_indicator_group_year[value] ) )
+		formatString: #,0.0
+		displayFolder: Latest
+		lineageTag: ab9d5630-4031-42a3-995a-466b14b63865
+
+	/// Year used by Internet Users % (latest reliable).
+	measure 'Internet Users Year (latest reliable)' =
+			VAR reliable_rows = CALCULATETABLE ( agg_indicator_group_year, REMOVEFILTERS ( dim_year ), REMOVEFILTERS ( dim_indicator ), agg_indicator_group_year[indicator_code] = "IT.NET.USER.ZS", agg_indicator_group_year[is_reliable] = TRUE () )
+			VAR y = MAXX ( reliable_rows, agg_indicator_group_year[year] )
+			RETURN IF ( HASONEVALUE ( dim_group[group_key] ), y )
+		formatString: 0
+		displayFolder: Latest
+		lineageTag: c3099eb2-d29a-4884-b61f-2f64196cf5e5
+
 	column group_type
 		dataType: string
 		isHidden

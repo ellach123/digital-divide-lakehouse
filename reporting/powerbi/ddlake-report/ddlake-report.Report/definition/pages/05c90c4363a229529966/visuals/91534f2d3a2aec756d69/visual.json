@@ -1,0 +1,274 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "91534f2d3a2aec756d69",
+  "position": {
+    "x": 969.97826940699042,
+    "y": 81.434742767377926,
+    "z": 2000,
+    "height": 499.46642230658466,
+    "width": 950.07199895274255,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_country"
+                    }
+                  },
+                  "Property": "Country"
+                }
+              },
+              "queryRef": "dim_country.Country",
+              "nativeQueryRef": "Country",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_country"
+                    }
+                  },
+                  "Property": "Income group (FY27)"
+                }
+              },
+              "queryRef": "dim_country.Income group (FY27)",
+              "nativeQueryRef": "Income group (FY27)"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "mart_country_year"
+                    }
+                  },
+                  "Property": "Population (2024)"
+                }
+              },
+              "queryRef": "mart_country_year.Population (2024)",
+              "nativeQueryRef": "Population (2024)"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "mart_country_year"
+                    }
+                  },
+                  "Property": "GDP per Capita PPP (2024)"
+                }
+              },
+              "queryRef": "mart_country_year.GDP per Capita PPP (2024)",
+              "nativeQueryRef": "GDP per Capita PPP (2024)",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_speed_country_quarter"
+                    }
+                  },
+                  "Property": "Fixed Download Mbps (last 4Q)"
+                }
+              },
+              "queryRef": "fct_speed_country_quarter.Fixed Download Mbps (last 4Q)",
+              "nativeQueryRef": "Fixed Download Mbps (last 4Q)"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "categoryAxis": [
+        {
+          "properties": {
+            "logAxisScale": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Richer countries have faster broadband'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "fc4aa3422e554bad4589",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_country"
+              }
+            },
+            "Property": "Income group (FY27)"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "dim_country",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "d"
+                              }
+                            },
+                            "Property": "Income group (FY27)"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "2219e60abd713cc50ada",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_country"
+              }
+            },
+            "Property": "Country"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ac2d71d60eb9e00801a2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "mart_country_year"
+              }
+            },
+            "Property": "GDP per Capita PPP (2024)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "5ae16fe7c9a3171061b7",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fct_speed_country_quarter"
+              }
+            },
+            "Property": "Fixed Download Mbps (last 4Q)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "8867c6dbd1c02009b73c",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "mart_country_year"
+              }
+            },
+            "Property": "Population (2024)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

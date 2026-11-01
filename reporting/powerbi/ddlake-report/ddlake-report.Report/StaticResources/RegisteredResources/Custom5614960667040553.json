@@ -1,0 +1,19 @@
+{
+  "name": "Custom",
+  "visualStyles": {
+    "*": {
+      "*": {}
+    }
+  },
+  "textClasses": {
+    "label": {
+      "fontSize": 12
+    },
+    "title": {
+      "fontSize": 14
+    },
+    "callout": {
+      "fontSize": 28
+    }
+  }
+}

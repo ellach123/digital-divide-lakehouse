@@ -58,6 +58,14 @@ table fct_speed_municipality_quarter
 		displayFolder: Speed (NL)
 		lineageTag: 90d07593-feb1-4057-9189-8493f84c85cf
 
+	/// Netherlands fixed broadband download speed in the latest quarter.
+	measure 'NL Fixed Mbps (latest quarter)' =
+			VAR q = CALCULATE ( MAX ( dim_quarter[quarter_start] ), REMOVEFILTERS ( dim_quarter ) )
+			RETURN CALCULATE ( [NL Download Mbps], REMOVEFILTERS ( dim_quarter ), dim_quarter[quarter_start] = q, REMOVEFILTERS ( dim_connection ), dim_connection[conn_type] = "fixed" )
+		formatString: #,0.0
+		displayFolder: Latest
+		lineageTag: ea47db72-eb58-47ac-b744-278a4ca74354
+
 	column municipality_code
 		dataType: string
 		isHidden

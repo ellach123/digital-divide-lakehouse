@@ -14,7 +14,7 @@ The project targets the Dutch data engineering job market, where the most common
 - **Transformations:** PySpark for the heavy work from bronze to silver, and dbt-databricks for modelling from silver to gold.
 - **Orchestration:** Airflow, run locally in Docker. In a Databricks-only organisation, Databricks Jobs would be enough; Airflow was chosen for its cross-system orchestration and its prevalence in job postings.
 - **Region:** North Europe (Ireland). The first apply in West Europe failed with `RequestDisallowedByAzure: The selected region is currently not accepting new customers` for the storage account and Key Vault. North Europe is West Europe's paired region, stays inside the EU for GDPR data residency, and is priced about the same.
-- **Serving:** Power BI Desktop (free). The report is published as a `.pbix` file plus screenshots, so no Pro licence is required.
+- **Serving:** Power BI Desktop (free). The report is published as a `.pbix` file plus screenshots, so no Pro licence is required. (Changed in [ADR 0007](0007-power-bi-report.md): the report is committed as a Power BI project (PBIP) instead of a `.pbix`.)
 
 ## Cost model
 

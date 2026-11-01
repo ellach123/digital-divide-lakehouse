@@ -24,6 +24,18 @@ table mart_country_year
 		displayFolder: Indicators (countries)
 		lineageTag: 2de04245-1c09-4b74-92a9-322a5911ed9f
 
+	/// GDP per capita, PPP, in 2024 (latest year with broad coverage).
+	measure 'GDP per Capita PPP (2024)' = CALCULATE ( [GDP per Capita PPP (weighted)], REMOVEFILTERS ( dim_year ), dim_year[Year] = 2024 )
+		formatString: #,0
+		displayFolder: Latest
+		lineageTag: a2b1a12f-fc85-4662-b302-09354d835653
+
+	/// Population in 2024.
+	measure 'Population (2024)' = CALCULATE ( [Total Population], REMOVEFILTERS ( dim_year ), dim_year[Year] = 2024 )
+		formatString: #,0
+		displayFolder: Latest
+		lineageTag: 370d65a5-f3af-433a-bb45-43627368c1a9
+
 	column country_code
 		dataType: string
 		isHidden

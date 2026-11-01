@@ -1,0 +1,160 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "34a2fd3eaca337070b89",
+  "position": {
+    "x": 0,
+    "y": 72.386438015447055,
+    "z": 1000,
+    "height": 194,
+    "width": 1268,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "agg_indicator_group_year"
+                    }
+                  },
+                  "Property": "Internet Users % (latest reliable)"
+                }
+              },
+              "queryRef": "agg_indicator_group_year.Internet Users % (latest reliable)",
+              "nativeQueryRef": "People online, world (%)",
+              "displayName": "People online, world (%)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "agg_speed_group_quarter"
+                    }
+                  },
+                  "Property": "World Fixed Mbps (latest quarter)"
+                }
+              },
+              "queryRef": "agg_speed_group_quarter.World Fixed Mbps (latest quarter)",
+              "nativeQueryRef": "Fixed broadband, world (Mbps)",
+              "displayName": "Fixed broadband, world (Mbps)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "agg_speed_group_quarter"
+                    }
+                  },
+                  "Property": "HIC/LIC Fixed Ratio (latest quarter)"
+                }
+              },
+              "queryRef": "agg_speed_group_quarter.HIC/LIC Fixed Ratio (latest quarter)",
+              "nativeQueryRef": "High- vs low-income speed (×)",
+              "displayName": "High- vs low-income speed (×)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_speed_municipality_quarter"
+                    }
+                  },
+                  "Property": "NL Fixed Mbps (latest quarter)"
+                }
+              },
+              "queryRef": "fct_speed_municipality_quarter.NL Fixed Mbps (latest quarter)",
+              "nativeQueryRef": "Fixed broadband, Netherlands (Mbps)",
+              "displayName": "Fixed broadband, Netherlands (Mbps)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "agg_indicator_group_year"
+                  }
+                },
+                "Property": "Internet Users % (latest reliable)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "262d44b6931c32c007e0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_group"
+              }
+            },
+            "Property": "Classification"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "dim_group",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
+                          }
+                        },
+                        "Property": "Classification"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'World'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "c08e0f3c28654964a047",
+  "displayName": "Income groups",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "width": {
+            "expr": {
+              "Literal": {
+                "Value": "287L"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "eaa0d7b421edd80d1a9a",
+      "target": "837e2b4c2c045134271d",
+      "type": "DataFilter"
+    },
+    {
+      "source": "eaa0d7b421edd80d1a9a",
+      "target": "91bcfdd3b50711612300",
+      "type": "DataFilter"
+    },
+    {
+      "source": "eaa0d7b421edd80d1a9a",
+      "target": "57d9255dca0077b8dd6b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "eaa0d7b421edd80d1a9a",
+      "target": "ad7d77a45910e0519044",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ad7d77a45910e0519044",
+      "target": "837e2b4c2c045134271d",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ad7d77a45910e0519044",
+      "target": "57d9255dca0077b8dd6b",
+      "type": "NoFilter"
+    }
+  ]
+}

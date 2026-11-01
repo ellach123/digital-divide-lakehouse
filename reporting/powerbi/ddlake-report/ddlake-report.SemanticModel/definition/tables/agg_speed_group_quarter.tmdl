@@ -43,6 +43,29 @@ table agg_speed_group_quarter
 		displayFolder: Speed (groups)
 		lineageTag: 62fa7cf8-10a1-4fad-a4a1-9bfc5b62f15a
 
+	/// Latest Ookla quarter loaded.
+	measure 'Latest Quarter' =
+			VAR q = CALCULATE ( MAX ( dim_quarter[quarter_start] ), REMOVEFILTERS ( dim_quarter ) )
+			RETURN LOOKUPVALUE ( dim_quarter[Quarter], dim_quarter[quarter_start], q )
+		displayFolder: Latest
+		lineageTag: b78d54e3-2811-4b09-9b1f-99975434878b
+
+	/// World fixed broadband download speed in the latest quarter.
+	measure 'World Fixed Mbps (latest quarter)' =
+			VAR q = CALCULATE ( MAX ( dim_quarter[quarter_start] ), REMOVEFILTERS ( dim_quarter ) )
+			RETURN CALCULATE ( [World Download Mbps], REMOVEFILTERS ( dim_quarter ), dim_quarter[quarter_start] = q, REMOVEFILTERS ( dim_connection ), dim_connection[conn_type] = "fixed" )
+		formatString: #,0.0
+		displayFolder: Latest
+		lineageTag: 5958a0f4-9633-4c1d-aa08-11cd3b8c2d8b
+
+	/// High- vs low-income fixed download speed in the latest quarter.
+	measure 'HIC/LIC Fixed Ratio (latest quarter)' =
+			VAR q = CALCULATE ( MAX ( dim_quarter[quarter_start] ), REMOVEFILTERS ( dim_quarter ) )
+			RETURN CALCULATE ( [HIC/LIC Download Ratio], REMOVEFILTERS ( dim_quarter ), dim_quarter[quarter_start] = q, REMOVEFILTERS ( dim_connection ), dim_connection[conn_type] = "fixed" )
+		formatString: 0.0
+		displayFolder: Latest
+		lineageTag: 9c51f015-739c-48d8-9220-142ec440238b
+
 	column group_type
 		dataType: string
 		isHidden

@@ -33,6 +33,23 @@ table fct_speed_country_quarter
 		displayFolder: Speed (countries)
 		lineageTag: acb59a7e-a6cc-4853-827b-defd4437c165
 
+	/// Fixed broadband tests in the latest 4 quarters.
+	measure 'Fixed Tests (last 4Q)' =
+			VAR q = CALCULATE ( MAX ( dim_quarter[quarter_start] ), REMOVEFILTERS ( dim_quarter ) )
+			RETURN CALCULATE ( [Speed Tests], REMOVEFILTERS ( dim_quarter ), dim_quarter[quarter_start] > EDATE ( q, -12 ), REMOVEFILTERS ( dim_connection ), dim_connection[conn_type] = "fixed" )
+		formatString: #,0
+		displayFolder: Latest
+		lineageTag: eb821f95-31b7-4199-a00f-54a27d111266
+
+	/// Fixed download speed over the latest 4 quarters; blank below 4,000 tests (the 1,000-per-quarter low-sample rule).
+	measure 'Fixed Download Mbps (last 4Q)' =
+			VAR q = CALCULATE ( MAX ( dim_quarter[quarter_start] ), REMOVEFILTERS ( dim_quarter ) )
+			VAR tests = [Fixed Tests (last 4Q)]
+			RETURN IF ( tests >= 4000, CALCULATE ( [Download Mbps], REMOVEFILTERS ( dim_quarter ), dim_quarter[quarter_start] > EDATE ( q, -12 ), REMOVEFILTERS ( dim_connection ), dim_connection[conn_type] = "fixed" ) )
+		formatString: #,0.0
+		displayFolder: Latest
+		lineageTag: a658f1b0-32ad-46f8-8f98-b6777b4da0c2
+
 	column country_code
 		dataType: string
 		isHidden

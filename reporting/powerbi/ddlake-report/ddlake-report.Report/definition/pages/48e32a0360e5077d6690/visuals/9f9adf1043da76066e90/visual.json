@@ -1,0 +1,87 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "9f9adf1043da76066e90",
+  "position": {
+    "x": 10.857965702317058,
+    "y": 79.625081816991752,
+    "z": 1000,
+    "height": 443.36693284461319,
+    "width": 620.71370598245846,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Data sources",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "• Internet use, GDP per capita (PPP) and population: World Bank, World Development Indicators (CC BY 4.0). Internet indicators originate from ITU.",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "• Income groups: World Bank historical classification (OGHIST), shown either as the group a country was in that year or as today's FY27 list.",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "• Broadband speed: Ookla Open Data speed tests (© Ookla, CC BY-NC-SA 4.0), 8 quarters from 2024 Q4 to 2026 Q3, fixed and mobile.",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "• Country boundaries: Made with Natural Earth (public domain). Dutch municipalities: © Kadaster via PDOK (CC BY 4.0).",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Pipeline: Python ingestion → Databricks (PySpark, Delta) → dbt Gold layer → Power BI. Orchestrated with Airflow, infrastructure in Terraform.",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

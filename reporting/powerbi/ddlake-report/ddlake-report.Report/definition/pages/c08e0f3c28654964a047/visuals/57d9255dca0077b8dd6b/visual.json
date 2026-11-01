@@ -1,0 +1,57 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "57d9255dca0077b8dd6b",
+  "position": {
+    "x": 1243.2370729153031,
+    "y": 0,
+    "z": 5000,
+    "height": 94.10236942008116,
+    "width": 676.81319544442988,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "agg_speed_group_quarter"
+                    }
+                  },
+                  "Property": "HIC/LIC Fixed Ratio (latest quarter)"
+                }
+              },
+              "queryRef": "agg_speed_group_quarter.HIC/LIC Fixed Ratio (latest quarter)",
+              "nativeQueryRef": "High- vs low-income fixed speed, latest quarter (×)",
+              "displayName": "High- vs low-income fixed speed, latest quarter (×)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "agg_speed_group_quarter"
+                  }
+                },
+                "Property": "HIC/LIC Fixed Ratio (latest quarter)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

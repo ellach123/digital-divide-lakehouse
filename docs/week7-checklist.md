@@ -25,7 +25,7 @@
 - [x] Global: internet use by region over time, GDP × speed scatter (log scale), fastest and slowest 10
 - [x] Income groups: classification and connection slicers, internet use and speed by income group, ratio card; 2005 high-income 61.0 / 52.7 checked
 - [x] Methods: sources and licences, calculation rules, limitations, pipeline diagram
-- [x] Netherlands: `tools/build_maps.py nl` and a Shape map of municipality fixed speed (clockwise rings for d3), province slicer, slowest 15, fixed and mobile by quarter; Ameland 116.8, Sluis 192.0, Lelystad 368.3 checked
+- [x] Netherlands: `tools/build_maps.py nl` and a Shape map of municipality fixed speed (clockwise rings for d3), colours around the Dutch average, province slicer, fastest and slowest 15, fixed and mobile by quarter; Ameland 116.8, Sluis 192.0, Lelystad 368.3 and both tables checked
 - [x] Theme fonts (text 12, titles 14, cards 28), KPI cards not cross-filtered
 - [x] Income groups chart subtitles explain the method; scatter plot leaves out countries without an FY27 income group
 

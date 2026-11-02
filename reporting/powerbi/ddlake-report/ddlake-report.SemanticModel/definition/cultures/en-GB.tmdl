@@ -7714,6 +7714,26 @@ cultureInfo en-GB
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Fixed Mbps": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Fixed Mbps (2026 Q3)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },

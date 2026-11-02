@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "b902c1e063631940004b",
+  "name": "2fcb536f73c5d9e59e33",
   "position": {
-    "x": 12.667626652703234,
-    "y": 0,
+    "x": 0,
+    "y": 77.815420866605578,
     "z": 0,
-    "height": 1080.3675873805471,
-    "width": 1111.1318235371123,
+    "height": 1002.5521665139416,
+    "width": 921.11742374656365,
     "tabOrder": 0
   },
   "visual": {
@@ -103,12 +103,28 @@
         {
           "properties": {
             "fillRule": {
-              "linearGradient2": {
+              "linearGradient3": {
                 "min": {
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#C2410C'"
+                        "Value": "'#E66C37'"
+                      }
+                    }
+                  }
+                },
+                "mid": {
+                  "color": {
+                    "expr": {
+                      "Literal": {
+                        "Value": "'#e6e6e6'"
+                      }
+                    }
+                  },
+                  "value": {
+                    "expr": {
+                      "Literal": {
+                        "Value": "324.9D"
                       }
                     }
                   }
@@ -117,7 +133,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'maxColor'"
+                        "Value": "'#118DFF'"
                       }
                     }
                   }
@@ -144,7 +160,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Fixed broadband download speed by municipality'"
+                  "Value": "'Netherlands Fixed broadband download speed by municipality'"
                 }
               }
             },
@@ -164,7 +180,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'NL Latest quarter fixed Mbps (2026 Q3) by Municipality'"
+                  "Value": "'2026 Q3, Mbps. Blue = faster than the Dutch average (324.9), orange = slower'"
                 }
               }
             },

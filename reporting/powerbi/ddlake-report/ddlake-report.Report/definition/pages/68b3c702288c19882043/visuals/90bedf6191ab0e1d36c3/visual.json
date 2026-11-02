@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "97290ee3e218ed8ed31d",
+  "name": "90bedf6191ab0e1d36c3",
   "position": {
-    "x": 1123.7994501898154,
-    "y": 653.28760308940957,
+    "x": 921.11742374656365,
+    "y": 638.81031548632018,
     "z": 3000,
-    "height": 427.07998429113758,
-    "width": 796.25081816991758,
+    "height": 441.557271894227,
+    "width": 998.93284461316932,
     "tabOrder": 3000
   },
   "visual": {
@@ -90,7 +90,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "14D"
                 }
               }
             },
@@ -111,7 +111,7 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Verdana'"
+                  "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
                 }
               }
             },
@@ -171,7 +171,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "18D"
+                  "Value": "16D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
                 }
               }
             }

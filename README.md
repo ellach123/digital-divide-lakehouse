@@ -56,7 +56,7 @@ Five pages. The full report is also in [a PDF](reporting/powerbi/ddlake-report.p
 
 ![Report page Income groups](docs/images/report-income-groups.png)
 
-**Netherlands:** fixed broadband speed by municipality in the latest quarter, the slowest 15, and fixed against mobile speed over eight quarters. The slowest places are the Wadden Islands and rural Zeeland.
+**Netherlands:** fixed broadband speed by municipality in the latest quarter against the Dutch average, the fastest and slowest 15, and fixed against mobile speed over eight quarters. The slowest places are the Wadden Islands and rural Zeeland; the fastest are Enschede and the new towns of Flevoland (Almere, Lelystad), not the big cities.
 
 ![Report page Netherlands](docs/images/report-netherlands.png)
 
@@ -253,7 +253,7 @@ The report is a Power BI project ([ADR 0007](docs/adr/0007-power-bi-report.md)) 
 | Overview | Where does the world stand? Latest internet use, world, Dutch and income-group broadband speed |
 | Global | How do countries compare? Internet use by region, GDP per capita vs fixed speed, fastest and slowest countries |
 | Income groups | Is the income gap closing? Internet use and speed by income group, with the classification of the year or today's |
-| Netherlands | Which municipalities are slow? Fixed speed by municipality, the slowest 15, fixed and mobile over time |
+| Netherlands | Which municipalities have the fastest and the slowest broadband? Fixed speed by municipality, the fastest and slowest 15, fixed and mobile over time |
 | Methods | Sources, calculation rules, limitations and the pipeline |
 
 Screenshots: see [Report](#report).

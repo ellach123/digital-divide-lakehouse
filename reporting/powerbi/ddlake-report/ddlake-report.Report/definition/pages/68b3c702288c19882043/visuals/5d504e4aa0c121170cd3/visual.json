@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "6c075e5890a87ad5a5ed",
+  "name": "5d504e4aa0c121170cd3",
   "position": {
-    "x": 1123.7994501898154,
+    "x": 1420.5838460531484,
     "y": 77.815420866605578,
-    "z": 2000,
-    "height": 575.472182222804,
-    "width": 798.06047912030374,
-    "tabOrder": 2000
+    "z": 5000,
+    "height": 560.99489461971461,
+    "width": 499.46642230658466,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "tableEx",
@@ -55,7 +55,8 @@
                 }
               },
               "queryRef": "fct_speed_municipality_quarter.NL Fixed Mbps (latest quarter)",
-              "nativeQueryRef": "NL Fixed Mbps (latest quarter)"
+              "nativeQueryRef": "Fixed Mbps",
+              "displayName": "Fixed Mbps"
             }
           ]
         }
@@ -128,13 +129,6 @@
                   "Value": "true"
                 }
               }
-            },
-            "wordWrap": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
             }
           }
         }
@@ -145,7 +139,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "288.03377960526274D"
+                  "Value": "114.2604173456919D"
                 }
               }
             }
@@ -159,7 +153,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "239.2897995496657D"
+                  "Value": "177.16752145672137D"
                 }
               }
             }
@@ -173,7 +167,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "186.6936789085976D"
+                  "Value": "168.86607020048433D"
                 }
               }
             }
@@ -218,7 +212,35 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Slowest 15 municipalities (fixed, latest quarter)'"
+                  "Value": "'Slowest 15 municipalities'"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
                 }
               }
             }
@@ -231,7 +253,27 @@
             "name": {
               "expr": {
                 "Literal": {
-                  "Value": "'Default'"
+                  "Value": "'Condensed'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Fixed broadband, latest quarter, Mbps'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
                 }
               }
             }

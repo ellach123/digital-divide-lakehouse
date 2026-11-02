@@ -8,6 +8,8 @@ with indicators as (
         year,
         {% for code, name in [
             ('IT.NET.USER.ZS', 'internet_users_pct'),
+            ('IT.NET.USER.FE.ZS', 'internet_users_female_pct'),
+            ('IT.NET.USER.MA.ZS', 'internet_users_male_pct'),
             ('IT.NET.BBND.P2', 'fixed_broadband_per_100'),
             ('IT.CEL.SETS.P2', 'mobile_subscriptions_per_100'),
             ('IT.NET.SECR.P6', 'secure_servers_per_million'),
@@ -49,6 +51,8 @@ select
     c.income_name_current,
     coalesce(i.year, s.year) as year,
     i.internet_users_pct,
+    i.internet_users_female_pct,
+    i.internet_users_male_pct,
     i.fixed_broadband_per_100,
     i.mobile_subscriptions_per_100,
     i.secure_servers_per_million,

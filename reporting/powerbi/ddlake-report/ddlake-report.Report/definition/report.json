@@ -11,7 +11,7 @@
       "type": "SharedResources"
     },
     "customTheme": {
-      "name": "Custom5614960667040553.json",
+      "name": "Custom6840269500644862.json",
       "reportVersionAtImport": {
         "visual": "2.14.0",
         "report": "3.4.0",
@@ -70,9 +70,14 @@
           "type": "Image"
         },
         {
-          "name": "Custom5614960667040553.json",
-          "path": "Custom5614960667040553.json",
+          "name": "Custom6840269500644862.json",
+          "path": "Custom6840269500644862.json",
           "type": "CustomTheme"
+        },
+        {
+          "name": "nl_municipalities6436988039322811.geojson",
+          "path": "nl_municipalities6436988039322811.geojson",
+          "type": "ShapeMap"
         }
       ]
     }

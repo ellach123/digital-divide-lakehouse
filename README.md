@@ -40,6 +40,26 @@ The same pipeline in more detail:
  Tests: pytest + dbt tests
 ```
 
+## Report
+
+Four of the five pages are done; the Netherlands map is in progress. To open the report yourself, see [How to open the report](#how-to-open-the-report).
+
+**Overview:** latest internet use and broadband speed, for the world and the Netherlands, and internet use by region.
+
+![Report page Overview](docs/images/report-overview.png)
+
+**Global:** internet use by region since 2000, GDP per capita against fixed broadband speed, and the fastest and slowest countries.
+
+![Report page Global](docs/images/report-global.png)
+
+**Income groups:** internet use and speed by World Bank income group, with the classification of the year or today's list.
+
+![Report page Income groups](docs/images/report-income-groups.png)
+
+**Methods:** sources and licences, calculation rules, limitations and the pipeline.
+
+![Report page Methods](docs/images/report-methods.png)
+
 ## Data sources
 
 | Source | Grain | Volume | Why it is here |
@@ -230,6 +250,8 @@ The report is a Power BI project ([ADR 0007](docs/adr/0007-power-bi-report.md)) 
 | Income groups | Is the income gap closing? Internet use and speed by income group, with the classification of the year or today's |
 | Netherlands | Fixed speed by municipality (in progress) |
 | Methods | Sources, calculation rules, limitations and the pipeline |
+
+Screenshots: see [Report](#report).
 
 The model divides sums, never averages averages; a group value is hidden when reporting countries cover less than 90% of the group's population; and every "latest" value is found by the model, so a refresh with new data moves all pages forward.
 

@@ -39,5 +39,6 @@
 ## F. Documentation and repo
 - [x] ADR 0007; ADR 0001 points to it
 - [x] README: how to open the report, repository layout
-- [ ] Page screenshots and a PDF export in the repository
+- [x] Page screenshots in the README (rendered from a PDF export, so no Desktop window or account is shown)
+- [ ] PDF export in the repository (after the Netherlands page)
 - [ ] Export, scan, commit, local gitleaks scan, push, CI

@@ -51,8 +51,11 @@ Income groups default to the **classification of the year** (`income_as_was`, fr
 
 The report is in English. Ookla's CC BY-NC-SA licence requires attribution, so the Methods page names every source and licence.
 
-### Netherlands map (planned)
-A Shape map with a map file generated from the municipality boundaries in Silver (`silver_nl_municipalities`) by `tools/build_nl_topojson.py`. The Shape map is available in Desktop 2.159 without a preview switch.
+### Netherlands map
+A Shape map of fixed download speed per municipality in the latest quarter. `tools/build_maps.py nl` downloads the boundaries from the same PDOK source as Notebook 32, simplifies them and writes `reporting/powerbi/maps/nl_municipalities.geojson` (342 municipalities, ~0.6 MB). The Shape map in Desktop 2.159 accepts GeoJSON (no TopoJSON step, no preview switch) and matches shapes by municipality name; all 342 names equal `dim_municipality`. The file has clockwise outer rings: the Shape map draws with d3, which fills the whole visual when a ring is counter-clockwise, the order PDOK uses (RFC 7946). Mobile speed is shown in the trend chart, not on the map: mobile has about 5% of the fixed tests.
+
+### Gender page (next version)
+The data and the map for a page on internet use by sex are in place; the page itself is left for the next version. `mart_country_year` now carries female and male internet use (WDI, ITU estimates), and `tools/build_maps.py world` writes `reporting/powerbi/maps/world_countries.geojson` from the same Natural Earth file as Notebook 34 (249 shapes, one per `dim_country` row, ~1.0 MB). The page will show each country's latest year from 2018 on (years differ: 115 of 217 economies, 80% of the population) and no regional averages: weighting them needs female and male population, which is not in the data (ADR 0005). Coverage is thinnest where gaps are likely largest: 13 of 48 economies in Sub-Saharan Africa.
 
 ## Consequences
 - **Opening the repository copy shows no data until it is refreshed:** the cache is not committed. The reader sets the two parameters, enters their own token and refreshes (README, "How to open the report").
@@ -62,7 +65,7 @@ A Shape map with a map file generated from the municipality boundaries in Silver
 - Microsoft's documentation still describes the Shape map as a preview feature that has to be switched on; in Desktop 2.159 it is not.
 - No publishing to the Power BI service: that needs a Pro licence (ADR 0001). Readers see screenshots and a PDF in the repository.
 
-## Results (2026-10-24 to 2026-11-01)
+## Results (2026-10-24 to 2026-11-02)
 Every value was checked against SQL on the Gold tables; all matched to the shown precision.
 
 | Check | Power BI | SQL |
@@ -74,3 +77,11 @@ Every value was checked against SQL on the Gold tables; all matched to the shown
 | World internet use 2022 / 2023 / 2024 | 66.8 / 71.3 / 72.7 % | 66.82 / 71.30 / 72.67 |
 | World internet use 2025 | hidden (coverage 36.7%) | 81.06, not reliable |
 | High-income internet use 2005, classification of the year / FY27 | 61.0 / 52.7 % | 61.0 / 52.7 |
+| Fastest and slowest 10 countries, fixed, last 4 quarters (at least 4,000 tests) | Singapore 611.8 … United States 385.2; Syria 15.8 … Congo, Rep. 28.3 | all 20 equal; 205 countries ranked |
+| Mobile download, 2026 Q3, by income group (low / lower middle / upper middle / high) | 43.2 / 102.0 / 127.6 / 192.7 Mbps | 43.17 / 101.96 / 127.58 / 192.73 |
+| Netherlands, fixed, 2026 Q3: Ameland / Sluis / Lelystad | 116.8 / 192.0 / 368.3 Mbps | 116.8 / 192.0 / 368.3 |
+
+The SQL checks also explained three things seen in the report (2026-11-02):
+- **Lower-middle-income speed drops from 109.8 to 77.9 Mbps between 2026 Q2 and Q3** with the classification of the time. FY27 took effect on 1 July and moved Jordan, the Philippines, Sri Lanka, Viet Nam and Micronesia up to upper middle income (Togo moved up into the group), so fast networks left the group. With today's list the series is smooth.
+- **The blank income group in the scatter plot** is 21 units outside WDI (e.g. Taiwan, Somaliland) that have speed tests but no GDP or income group. They are filtered out of the plot; it shows 182 countries by SQL.
+- **West Bank and Gaza: 251.8 Mbps fixed, far above what its GDP suggests.** Gaza has 12 tests in the last four quarters, so the value is the West Bank's. 38% of its tests come from tiles averaging at least 300 Mbps (398 Mbps on average); the other 62% average 162 Mbps. Country values follow Natural Earth's de facto boundaries, which the Methods page states.

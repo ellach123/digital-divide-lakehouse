@@ -4,7 +4,7 @@
 
 An end-to-end data platform that measures the digital divide, from global country-level ICT indicators down to broadband quality in Dutch municipalities.
 
-> Status: **Week 6 done: orchestration and CI**: one Airflow DAG runs the whole pipeline (extract, SAS rotation, Databricks jobs as code, dbt) in a locked task image; a failure test proves failures stop safely; CI checks code, dbt, the DAG, Terraform and secrets without cloud credentials; Terraform state is remote. Next: the Power BI report.
+> Status: **Week 7 done: the Power BI report**: a Power BI project (PBIP) with a star-schema semantic model and five pages, from the world to Dutch municipalities, every value checked against SQL on the Gold tables. Next: a page on internet use by sex (its data and world map are already in place, see [ADR 0007](docs/adr/0007-power-bi-report.md)).
 
 | Week | Scope | Status |
 |---|---|---|
@@ -14,7 +14,7 @@ An end-to-end data platform that measures the digital divide, from global countr
 | 4 | Ookla global country-level aggregation (Natural Earth + H3 tessellation), performance notes | ✅ |
 | 5 | dbt Gold star schema, SCD2 income history (FY89–FY27) + snapshot, 54 tests | ✅ |
 | 6 | Airflow 3 + Docker task image, Databricks Asset Bundle, GitHub Actions CI, remote Terraform state | ✅ |
-| 7 | Power BI report as a Power BI project (PBIP): star-schema semantic model, coverage rules, five pages | ⏳ |
+| 7 | Power BI report as a Power BI project (PBIP): star-schema semantic model, coverage rules, five pages | ✅ |
 
 ## Architecture
 
@@ -42,7 +42,7 @@ The same pipeline in more detail:
 
 ## Report
 
-Four of the five pages are done; the Netherlands map is in progress. To open the report yourself, see [How to open the report](#how-to-open-the-report).
+Five pages. The full report is also in [a PDF](reporting/powerbi/ddlake-report.pdf); to open it in Power BI Desktop yourself, see [How to open the report](#how-to-open-the-report).
 
 **Overview:** latest internet use and broadband speed, for the world and the Netherlands, and internet use by region.
 
@@ -55,6 +55,10 @@ Four of the five pages are done; the Netherlands map is in progress. To open the
 **Income groups:** internet use and speed by World Bank income group, with the classification of the year or today's list.
 
 ![Report page Income groups](docs/images/report-income-groups.png)
+
+**Netherlands:** fixed broadband speed by municipality in the latest quarter, the slowest 15, and fixed against mobile speed over eight quarters. The slowest places are the Wadden Islands and rural Zeeland.
+
+![Report page Netherlands](docs/images/report-netherlands.png)
 
 **Methods:** sources and licences, calculation rules, limitations and the pipeline.
 
@@ -83,7 +87,8 @@ notebooks/         Databricks notebooks (source format): validation, Bronze, Sil
 tools/             Developer tools, e.g. exporting clean notebook run snapshots
 transform/dbt/     dbt project: staging views, Gold star schema, SCD2, seed, snapshot
 orchestration/     Airflow DAG and the script that sets its connections and variables
-reporting/powerbi/ Power BI project (PBIP): semantic model (TMDL) and report (PBIR)
+reporting/powerbi/ Power BI project (PBIP): semantic model (TMDL) and report (PBIR),
+                   a PDF of the report, and the map files for the Shape maps
 databricks.yml     Databricks jobs as code (Asset Bundle)
 Dockerfile         Task image for the extractor, SAS rotation and dbt
 .github/workflows/ CI and image build
@@ -248,7 +253,7 @@ The report is a Power BI project ([ADR 0007](docs/adr/0007-power-bi-report.md)) 
 | Overview | Where does the world stand? Latest internet use, world, Dutch and income-group broadband speed |
 | Global | How do countries compare? Internet use by region, GDP per capita vs fixed speed, fastest and slowest countries |
 | Income groups | Is the income gap closing? Internet use and speed by income group, with the classification of the year or today's |
-| Netherlands | Fixed speed by municipality (in progress) |
+| Netherlands | Which municipalities are slow? Fixed speed by municipality, the slowest 15, fixed and mobile over time |
 | Methods | Sources, calculation rules, limitations and the pipeline |
 
 Screenshots: see [Report](#report).
@@ -262,6 +267,8 @@ python -m tools.export_pbip <path-to-working-copy>
 ```
 
 The export copies an allowlist of project files, replaces the parameter values with placeholders and stops if it finds a host, token, path, e-mail address or other identifier.
+
+The map files in `reporting/powerbi/maps/` are generated, not drawn: `python -m tools.build_maps nl` (municipalities, PDOK) and `python -m tools.build_maps world` (countries, Natural Earth). The Netherlands file is embedded in the report; after rebuilding it, upload it again in the Shape map's map settings.
 
 ## Cost control
 

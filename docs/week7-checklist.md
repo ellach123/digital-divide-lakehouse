@@ -25,20 +25,21 @@
 - [x] Global: internet use by region over time, GDP × speed scatter (log scale), fastest and slowest 10
 - [x] Income groups: classification and connection slicers, internet use and speed by income group, ratio card; 2005 high-income 61.0 / 52.7 checked
 - [x] Methods: sources and licences, calculation rules, limitations, pipeline diagram
-- [ ] Netherlands: `tools/build_nl_topojson.py` and a Shape map of municipality fixed speed
+- [x] Netherlands: `tools/build_maps.py nl` and a Shape map of municipality fixed speed (clockwise rings for d3), province slicer, slowest 15, fixed and mobile by quarter; Ameland 116.8, Sluis 192.0, Lelystad 368.3 checked
 - [x] Theme fonts (text 12, titles 14, cards 28), KPI cards not cross-filtered
 - [x] Income groups chart subtitles explain the method; scatter plot leaves out countries without an FY27 income group
 
-## E. Checks waiting for the warehouse
-- [ ] Fastest and slowest 10 countries and the number of scatter points
-- [ ] Mobile speed by income group, 2026 Q3
-- [ ] Countries that changed income group in FY27 (drop in lower-middle-income speed in 2026 Q3)
-- [ ] West Bank and Gaza: fixed speed far above what its GDP suggests; check which tests fall inside its boundary
-- [ ] Which country has GDP data but no FY27 income group (shown as blank in the scatter plot, now filtered out)
+## E. Checks waiting for the warehouse (done 2026-11-02, results in ADR 0007)
+- [x] Fastest and slowest 10 countries (all 20 equal) and the number of scatter points (182 by SQL)
+- [x] Mobile speed by income group, 2026 Q3 (43.2 / 102.0 / 127.6 / 192.7)
+- [x] Countries that changed income group in FY27 (drop in lower-middle-income speed in 2026 Q3)
+- [x] West Bank and Gaza: fixed speed far above what its GDP suggests; check which tests fall inside its boundary
+- [x] The blank income group in the scatter plot: 21 units outside WDI (e.g. Taiwan), with speed but no GDP or income group
 
 ## F. Documentation and repo
 - [x] ADR 0007; ADR 0001 points to it
 - [x] README: how to open the report, repository layout
 - [x] Page screenshots in the README (rendered from a PDF export, so no Desktop window or account is shown)
-- [ ] PDF export in the repository (after the Netherlands page)
+- [x] PDF export in the repository (`reporting/powerbi/ddlake-report.pdf`, five pages); five page screenshots rendered from it
+- [x] Data and world map for a gender page (`mart_country_year` female and male internet use, `tools/build_maps.py world`); the page itself is left for the next version
 - [ ] Export, scan, commit, local gitleaks scan, push, CI
